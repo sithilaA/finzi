@@ -17,7 +17,15 @@ function OffCanvas() {
   function handleBtnClickDashboard() {
     navigate("/dashboard");
   }
-  function handleBtnClickIncome() {}
+  function handleBtnClickIncome() {
+    navigate("/incomeExpenses");
+  }
+  function handleBtnClickIncomeCate() {
+    navigate("/incomeCategories");
+  }
+  function handleBtnClickExpenseCate() {
+    navigate("/expenseCategories");
+  }
   function handleBtnClickLogOut() {
     navigate("/login");
   }
@@ -99,10 +107,14 @@ function OffCanvas() {
 
               <Dropdown.Menu className="container">
                 <Dropdown.Item onClick={handleBtnClickIncome}>
-                  Action
+                  Income Expense
                 </Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                <Dropdown.Item onClick={handleBtnClickIncomeCate}>
+                  Income Categories
+                </Dropdown.Item>
+                <Dropdown.Item onClick={handleBtnClickExpenseCate}>
+                  Expense Categories
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <div
@@ -110,9 +122,6 @@ function OffCanvas() {
               style={{
                 position: "absolute",
                 bottom: "0",
-                // right: "0",
-                // marginBottom: "4vh",
-                // marginRight: "3vw",
               }}
             >
               <Button
