@@ -6,6 +6,7 @@ import { useState } from "react";
 import Modals from "../../components/Modals";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../services/firebase";
+import Spinner from "react-bootstrap/Spinner";
 function Login() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -15,6 +16,9 @@ function Login() {
   const [variant, setVariant] = useState("text-danger");
   const navigate = useNavigate();
 
+  const [showSpinner, setShowSpinner] = useState(false);
+  const handleCloseSpinner = () => setShowSpinner(false);
+  const handleShowSpinner = () => setShowSpinner(true);
   function handleLogin() {
     // Handle login logic here
     let email = document.getElementById("emailInput").value;
@@ -28,6 +32,7 @@ function Login() {
       handleShow();
     } else {
       signInUser(email, password);
+      handleShowSpinner();
     }
     async function signInUser(email, password) {
       try {
@@ -35,6 +40,7 @@ function Login() {
         localStorage.setItem("email", email);
         navigate("/dashboard");
       } catch (error) {
+        handleCloseSpinner();
         setErrorTitle("Login Error");
         switch (error.code) {
           case "auth/user-not-found":
@@ -87,6 +93,11 @@ function Login() {
         className="shadow-lg"
       >
         <div className="container p-5">
+          {showSpinner && (
+            <div className="text-center">
+              <Spinner animation="grow" variant="dark" />
+            </div>
+          )}
           <h1 className="text-center">Login</h1>
           <Form style={{ width: "300px" }} className="mx-auto mt-4">
             <Form.Group className="mb-3">

@@ -6,6 +6,7 @@ import Modals from "../../components/Modals";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../services/firebase";
 import { collection, addDoc } from "firebase/firestore";
+import Spinner from "react-bootstrap/Spinner";
 
 function Register() {
   const [show, setShow] = useState(false);
@@ -15,6 +16,10 @@ function Register() {
   const [errorMessage, setErrorMessage] = useState("");
   const [variant, setVariant] = useState("text-danger");
   const navigate = useNavigate();
+
+  const [showSpinner, setShowSpinner] = useState(false);
+  const handleCloseSpinner = () => setShowSpinner(false);
+  const handleShowSpinner = () => setShowSpinner(true);
 
   function handleRegister() {
     // Handle login logic here
@@ -48,6 +53,7 @@ function Register() {
       handleShow();
     } else {
       res = createUser(email, password);
+      handleShowSpinner();
     }
 
     async function createUser(email, password) {
@@ -56,6 +62,7 @@ function Register() {
         addUserData();
         return res;
       } catch (error) {
+        handleCloseSpinner();
         setErrorTitle("Registration Error");
         switch (error.code) {
           case "auth/email-already-in-use":
@@ -78,7 +85,9 @@ function Register() {
             break;
           default:
             console.error(error);
-            setErrorMessage("Something went wrong. Try again later.");
+            setErrorMessage(
+              "Something went wrong. Please try another email or try again later."
+            );
             break;
         }
         handleShow();
@@ -117,6 +126,12 @@ function Register() {
       >
         <div className="container p-5">
           <h1 className="text-center">Sign Up Form</h1>
+          {showSpinner && (
+            <div className="text-center">
+              <Spinner animation="grow" variant="dark" />
+            </div>
+          )}
+
           <Form style={{ width: "450px" }} className="mx-auto mt-4">
             <Form.Group className="mb-3">
               <Form.Label>Email address</Form.Label>
